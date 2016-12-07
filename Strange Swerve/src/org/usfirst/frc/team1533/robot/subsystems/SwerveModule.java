@@ -10,7 +10,7 @@ public class SwerveModule {
     private SpeedController steerController, driveController;
     private AbsoluteEncoder steerEncoder;
     private Vector location;
-    
+
     /**
      * @param driveController motor controller for drive motor
      * @param steerController motor controller for steer motor
@@ -18,74 +18,79 @@ public class SwerveModule {
      * @param locationX x coordinate of wheel relative to center of robot (inches)
      * @param locationY y coordinate of wheel relative to center of robot (inches)
      */
-    public SwerveModule(SpeedController driveController, SpeedController steerController, 
-    		AbsoluteEncoder steerEncoder, double locationX, double locationY) {
-    	this.steerController = steerController;
-    	this.driveController = driveController;
-    	this.steerEncoder = steerEncoder;
-    	
-    	location = new Vector(locationX, locationY);
-    	
-    	steerPID = new PIDController(Constants.Swerve.STEER_P, Constants.Swerve.STEER_I, Constants.Swerve.STEER_D,
-    			steerEncoder, steerController);
-    	steerPID.setInputRange(0, 2*Math.PI);
-    	steerPID.setOutputRange(-Constants.Swerve.STEER_CAP, Constants.Swerve.STEER_CAP);
-    	steerPID.setContinuous();
-    	steerPID.disable();
+    public SwerveModule(SpeedController driveController, SpeedController steerController, AbsoluteEncoder steerEncoder,
+            double locationX, double locationY) {
+        this.steerController = steerController;
+        this.driveController = driveController;
+        this.steerEncoder = steerEncoder;
+
+        location = new Vector(locationX, locationY);
+
+        steerPID = new PIDController(Constants.Swerve.STEER_P, Constants.Swerve.STEER_I, Constants.Swerve.STEER_D,
+                steerEncoder, steerController);
+        steerPID.setInputRange(0, 2 * Math.PI);
+        steerPID.setOutputRange(-Constants.Swerve.STEER_CAP, Constants.Swerve.STEER_CAP);
+        steerPID.setContinuous();
+        steerPID.disable();
     }
-    
+
     /**
      * Set the module's target angle and target speed.
+     * 
      * @param angle in radians
      * @param speed motor speed [-1 to 1]
      */
     public void set(double angle, double speed) {
-    	angle = wrapAngle(angle);
-    	double dist = Math.abs(angle-steerEncoder.getAngle());
-    	
-    	// if we are more than 90 degrees from the target, flip 180 and drive in reverse
-    	if (dist > Math.PI/2 && dist < 3*Math.PI/2) {
-    		angle = wrapAngle(angle + Math.PI);
-    		speed *= -1;
-    	}
-    	
-    	steerPID.setSetpoint(angle);
-    	driveController.set(Math.max(-1, Math.min(1, speed)));
+        angle = wrapAngle(angle);
+        double dist = Math.abs(angle - steerEncoder.getAngle());
+
+        // if we are more than 90 degrees from the target, flip 180 and drive in
+        // reverse
+        if (dist > Math.PI / 2 && dist < 3 * Math.PI / 2) {
+            angle = wrapAngle(angle + Math.PI);
+            speed *= -1;
+        }
+
+        steerPID.setSetpoint(angle);
+        driveController.set(Math.max(-1, Math.min(1, speed)));
     }
-    
+
     /**
      * Set the drive speed to zero, but don't change the steer angle.
      */
     public void stop() {
-    	driveController.set(0);
+        driveController.set(0);
     }
-    
+
     /**
      * Converts an angle to its equivalent between 0 and 2pi.
+     * 
      * @param angle angle in radians
      * @return equivalent angle between 0 and 2pi
      */
     private double wrapAngle(double angle) {
-    	angle %= 2*Math.PI;
-    	if (angle<0) angle += 2*Math.PI;
-    	return angle;
+        angle %= 2 * Math.PI;
+        if (angle < 0)
+            angle += 2 * Math.PI;
+        return angle;
     }
-    
+
     /**
      * Gets the module's location relative to the center of the robot
+     * 
      * @return
      */
     public Vector getLocation() {
-    	return location.clone();
+        return location.clone();
     }
-    
+
     /**
-     * Point the module forward and call this method to get the angleOffset
-     * for the module's steer encoder.
+     * Point the module forward and call this method to get the angleOffset for
+     * the module's steer encoder.
+     * 
      * @return
      */
     public double getSteerCalibration() {
-    	return steerEncoder.getCalibration();
+        return steerEncoder.getCalibration();
     }
 }
-

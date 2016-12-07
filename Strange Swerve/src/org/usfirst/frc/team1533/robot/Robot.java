@@ -5,18 +5,18 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 
 public class Robot extends IterativeRobot {
 
-	public void robotInit() {
-		
-    }
-	
-    public void disabledInit(){
+    public void robotInit() {
 
     }
-	
-	public void disabledPeriodic() {
-		Scheduler.getInstance().run();
-	}
-	
+
+    public void disabledInit() {
+
+    }
+
+    public void disabledPeriodic() {
+        Scheduler.getInstance().run();
+    }
+
     public void autonomousInit() {
 
     }
@@ -32,5 +32,5 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
     }
-    
+
 }

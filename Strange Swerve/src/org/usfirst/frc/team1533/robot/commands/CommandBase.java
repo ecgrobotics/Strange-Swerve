@@ -6,11 +6,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.*;
 
 public abstract class CommandBase extends Command {
-	static SwerveDrive swerve = new SwerveDrive();
-	static Joystick joy1 = new Joystick(0);
-	
-	public static void init() {
-		
-	}
-	
+    static SwerveDrive swerve = new SwerveDrive();
+    static Joystick joy1 = new Joystick(0);
+
+    public static void init() {
+
+    }
+
 }

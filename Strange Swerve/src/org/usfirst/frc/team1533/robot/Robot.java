@@ -1,12 +1,14 @@
 package org.usfirst.frc.team1533.robot;
 
+import org.usfirst.frc.team1533.robot.commands.CommandBase;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 public class Robot extends IterativeRobot {
 
     public void robotInit() {
-
+        CommandBase.init();
     }
 
     public void disabledInit() {

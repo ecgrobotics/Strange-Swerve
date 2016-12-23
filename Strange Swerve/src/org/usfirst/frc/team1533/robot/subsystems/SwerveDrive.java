@@ -71,7 +71,7 @@ public class SwerveDrive extends Subsystem {
         Vector transVect = new Vector(x, y);
 
         // apply heading offset
-        transVect.rotate(Math.toDegrees(headingOffset));
+        transVect.rotate(Math.toRadians(headingOffset));
 
         double maxDist = 0;
         for (int i = 0; i < modules.length; i++) {

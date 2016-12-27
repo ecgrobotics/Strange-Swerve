@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1533.robot.subsystems;
 
 import org.usfirst.frc.team1533.robot.Constants;
-import org.usfirst.frc.team1533.robot.commands.TeleDriveCommand;
+import org.usfirst.frc.team1533.robot.commands.DriveCommand;
 import org.usfirst.frc.team1533.robot.util.Vector;
 
 import edu.wpi.first.wpilibj.Talon;
@@ -60,26 +60,26 @@ public class SwerveDrive extends Subsystem {
      * Private method to set angles and speeds of the modules. Should not be
      * used directly.
      * 
-     * @param x speed in left/right direction (-1 to 1)
-     * @param y speed in forward/reverse direction (-1 to 1)
-     * @param rotation rotation speed (-1 to 1, positive is clockwise)
+     * @param xSpeed speed in left/right direction (-1 to 1)
+     * @param ySpeed speed in forward/reverse direction (-1 to 1)
+     * @param rotationSpeed rotation speed (-1 to 1, positive is clockwise)
      * @param headingOffset offset in heading in degrees, positive is a
      *        counter-clockwise offset
      */
-    private void drive(double x, double y, double rotation, double headingOffset) {
+    private void drive(double xSpeed, double ySpeed, double rotationSpeed, double headingOffset) {
         Vector[] vects = new Vector[modules.length];
-        Vector transVect = new Vector(x, y);
+        Vector transVect = new Vector(xSpeed, ySpeed);
 
         // apply heading offset
-        transVect.rotate(Math.toDegrees(headingOffset));
+        transVect.rotate(Math.toRadians(headingOffset));
 
-        double maxDist = 0;
+        double farthestDist = 0;
         for (int i = 0; i < modules.length; i++) {
             vects[i] = modules[i].getLocation();
             // calculate module's position relative to pivot point
             vects[i].subtract(centerOfRotation);
             // find farthest distance from pivot
-            maxDist = Math.max(maxDist, vects[i].getMagnitude());
+            farthestDist = Math.max(farthestDist, vects[i].getMagnitude());
         }
 
         double maxPower = 1;
@@ -90,7 +90,7 @@ public class SwerveDrive extends Subsystem {
             // scale by relative rate and normalize to the farthest module
             // i.e. the farthest module drives with power equal to 'rotation'
             // variable
-            vects[i].multiply(rotation / maxDist);
+            vects[i].multiply(rotationSpeed / farthestDist);
             vects[i].add(transVect);
             // calculate largest power assigned to modules
             // if any exceed 100%, all must be scale down
@@ -100,7 +100,7 @@ public class SwerveDrive extends Subsystem {
         for (int i = 0; i < modules.length; i++) {
             // scale down by the largest power that exceeds 100%
             double power = vects[i].getMagnitude() / maxPower;
-            if (power > 0.01) {
+            if (power > 0.05) {
                 modules[i].set(vects[i].getAngle() - Math.PI / 2, power);
             } else {
                 modules[i].stop();
@@ -141,6 +141,6 @@ public class SwerveDrive extends Subsystem {
     }
 
     public void initDefaultCommand() {
-        setDefaultCommand(new TeleDriveCommand());
+        setDefaultCommand(new DriveCommand());
     }
 }

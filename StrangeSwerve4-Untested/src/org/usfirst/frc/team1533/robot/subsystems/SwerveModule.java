@@ -5,6 +5,11 @@ import org.usfirst.frc.team1533.robot.util.Vector;
 
 import edu.wpi.first.wpilibj.*;
 
+/**
+ * A single swerve module with independent drive and steer.
+ * 
+ * @author Duncan Page
+ */
 public class SwerveModule {
     private PIDController steerPID;
     private SpeedController steerController, driveController;
@@ -12,6 +17,9 @@ public class SwerveModule {
     private Vector location;
 
     /**
+     * Construct a swerve module given its two motor controllers, rotational encoder,
+     *  and location on the robot.
+     * 
      * @param driveController motor controller for drive motor
      * @param steerController motor controller for steer motor
      * @param steerEncoder absolute encoder on steering motor
@@ -31,7 +39,7 @@ public class SwerveModule {
         steerPID.setInputRange(0, 2 * Math.PI);
         steerPID.setOutputRange(-Constants.Swerve.STEER_CAP, Constants.Swerve.STEER_CAP);
         steerPID.setContinuous();
-        steerPID.disable();
+        steerPID.enable();
     }
 
     /**
@@ -41,18 +49,17 @@ public class SwerveModule {
      * @param speed motor speed [-1 to 1]
      */
     public void set(double angle, double speed) {
-        angle = wrapAngle(angle);
-        double dist = Math.abs(angle - steerEncoder.getAngle());
+        angle = normalizeAngle(angle);
+        double diff = Math.abs(angle - steerEncoder.getAngle());
 
-        // if we are more than 90 degrees from the target, flip 180 and drive in
-        // reverse
-        if (dist > Math.PI / 2 && dist < 3 * Math.PI / 2) {
-            angle = wrapAngle(angle + Math.PI);
+        // if we are more than 90 degrees from the target, flip 180 and drive in reverse
+        if (diff > Math.PI / 2 && diff < 3 * Math.PI / 2) {
+            angle = normalizeAngle(angle + Math.PI);
             speed *= -1;
         }
 
         steerPID.setSetpoint(angle);
-        driveController.set(Math.max(-1, Math.min(1, speed)));
+        driveController.set(speed);
     }
 
     /**
@@ -66,19 +73,18 @@ public class SwerveModule {
      * Converts an angle to its equivalent between 0 and 2pi.
      * 
      * @param angle angle in radians
-     * @return equivalent angle between 0 and 2pi
+     * @return normalized angle between 0 and 2pi
      */
-    private double wrapAngle(double angle) {
+    private double normalizeAngle(double angle) {
         angle %= 2 * Math.PI;
-        if (angle < 0)
-            angle += 2 * Math.PI;
+        if (angle < 0) angle += 2 * Math.PI;
         return angle;
     }
 
     /**
      * Gets the module's location relative to the center of the robot
      * 
-     * @return
+     * @return module location
      */
     public Vector getLocation() {
         return location.clone();
@@ -88,7 +94,7 @@ public class SwerveModule {
      * Point the module forward and call this method to get the angleOffset for
      * the module's steer encoder.
      * 
-     * @return
+     * @return calibration value for the steer encoder
      */
     public double getSteerCalibration() {
         return steerEncoder.getCalibration();

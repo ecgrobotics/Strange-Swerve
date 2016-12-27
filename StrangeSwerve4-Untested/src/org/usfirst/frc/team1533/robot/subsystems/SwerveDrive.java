@@ -7,6 +7,9 @@ import org.usfirst.frc.team1533.robot.util.Vector;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+/**
+ * @author Duncan Page
+ */
 public class SwerveDrive extends Subsystem {
     private Vector centerOfRotation = new Vector(0, 0);
     private SwerveModule[] modules;
@@ -75,9 +78,8 @@ public class SwerveDrive extends Subsystem {
 
         double farthestDist = 0;
         for (int i = 0; i < modules.length; i++) {
-            vects[i] = modules[i].getLocation();
             // calculate module's position relative to pivot point
-            vects[i].subtract(centerOfRotation);
+            vects[i] = modules[i].getLocation().subtract(centerOfRotation);
             // find farthest distance from pivot
             farthestDist = Math.max(farthestDist, vects[i].getMagnitude());
         }

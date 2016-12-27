@@ -58,7 +58,7 @@ public class AbsoluteEncoder extends AnalogInput {
      * When the encoder is pointing at the desired angle, call this method to
      * get the angleOffset such that the current angle will be zero.
      * 
-     * @return
+     * @return angle offset to calibrate encoder
      */
     public double getCalibration() {
         return normalizeAngle(getAngle() + angleOffset);

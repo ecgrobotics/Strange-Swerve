@@ -23,28 +23,28 @@ public class SwerveDrive extends Subsystem {
                 new SwerveModule(new Talon(Constants.Swerve.FL_DRIVE), 
                         new Talon(Constants.Swerve.FL_STEER),
                         new AbsoluteEncoder(Constants.Swerve.FL_ENCODER, Constants.Swerve.FL_ENCODER_OFFSET, 
-                                Constants.Swerve.ENCODERS_FLIPPED),
+                                Constants.Swerve.ENCODERS_REVERSED),
                         -Constants.Swerve.BASE_WIDTH / 2, 
                         Constants.Swerve.BASE_LENGTH / 2),
                 // front right
                 new SwerveModule(new Talon(Constants.Swerve.FR_DRIVE), 
                         new Talon(Constants.Swerve.FR_STEER),
                         new AbsoluteEncoder(Constants.Swerve.FR_ENCODER, Constants.Swerve.FR_ENCODER_OFFSET, 
-                                Constants.Swerve.ENCODERS_FLIPPED),
+                                Constants.Swerve.ENCODERS_REVERSED),
                         Constants.Swerve.BASE_WIDTH / 2, 
                         Constants.Swerve.BASE_LENGTH / 2),
                 // back left
                 new SwerveModule(new Talon(Constants.Swerve.BL_DRIVE), 
                         new Talon(Constants.Swerve.BL_STEER),
                         new AbsoluteEncoder(Constants.Swerve.BL_ENCODER, Constants.Swerve.BL_ENCODER_OFFSET, 
-                                Constants.Swerve.ENCODERS_FLIPPED),
+                                Constants.Swerve.ENCODERS_REVERSED),
                         -Constants.Swerve.BASE_WIDTH / 2, 
                         -Constants.Swerve.BASE_LENGTH / 2),
                 // back right
                 new SwerveModule(new Talon(Constants.Swerve.BR_DRIVE), 
                         new Talon(Constants.Swerve.BR_STEER),
                         new AbsoluteEncoder(Constants.Swerve.BR_ENCODER, Constants.Swerve.BR_ENCODER_OFFSET,
-                                Constants.Swerve.ENCODERS_FLIPPED),
+                                Constants.Swerve.ENCODERS_REVERSED),
                         Constants.Swerve.BASE_WIDTH / 2, 
                         -Constants.Swerve.BASE_LENGTH / 2) };
     }

@@ -27,7 +27,7 @@ public class Constants {
         public static final double FR_ENCODER_OFFSET = 0;
         public static final double BL_ENCODER_OFFSET = 0;
         public static final double BR_ENCODER_OFFSET = 0;
-        public static final boolean ENCODERS_FLIPPED = false;
+        public static final boolean ENCODERS_REVERSED = false;
 
         public static final double BASE_WIDTH = 24;
         public static final double BASE_LENGTH = 24;
